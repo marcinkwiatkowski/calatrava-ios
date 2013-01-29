@@ -55,7 +55,15 @@
 }
 
 - (id)valueForField:(NSString *)field {
-  return [_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"window.%@View.get('%@');", [self pageName], field]];
+  id fieldValue = [_webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"window.%@View.get('%@');", [self pageName], field]];
+  return [self escapedForJavaScript:fieldValue];
+}
+
+- (NSString *)escapedForJavaScript:(NSString *)string {
+    NSString *jsonString = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:@[string] options:0 error:nil] encoding:NSUTF8StringEncoding];
+
+    NSString *escapedString = [jsonString substringWithRange:NSMakeRange(2, jsonString.length - 4)];
+    return escapedString;
 }
 
 - (id)attachHandler:(NSString *)proxyId forEvent:(NSString *)event
