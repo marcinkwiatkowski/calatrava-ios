@@ -163,6 +163,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     if ([arg isKindOfClass:[NSString class]]) {
       formatted = [arg stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
       formatted = [NSString stringWithFormat:@"\"%@\"", [formatted stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]];
+      formatted = [[formatted componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]] componentsJoinedByString:@" "];
     } else if ([arg isKindOfClass:[NSNumber class]]) {
       formatted = arg;
     } else if ([arg isKindOfClass:[NSDictionary class]] || [arg isKindOfClass:[NSArray class]]) {
